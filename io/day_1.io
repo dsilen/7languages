@@ -35,6 +35,15 @@ Protos Core File slotNames
 
 ## Dagens uppgifter
 
+# exempel problem
+googla jezen / Io Example Problems
+
+# io community
+stackoverflow
+
+# io style guide
+googla wikibooks Io Programming/Io Style Guide
+
 ## starkt typat?
 #1 + "1"
 #==> Exception: argument 0 to method '+' must be a Number, not a 'Sequence'
