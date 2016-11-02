@@ -1,4 +1,4 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 
 # File.Open("namn") {}
 # File.Open("namn") utan block. Eller File.New("namn") synonym

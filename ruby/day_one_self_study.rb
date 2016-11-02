@@ -1,4 +1,4 @@
-#!/bin/env ruby
+#!/usr/bin/env ruby
 # Ska köras i irb
 
 #1 Hitta The Ruby API
