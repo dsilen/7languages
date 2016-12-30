@@ -25,6 +25,8 @@ sudoku4(Puzzle, Solution) :-
     Square1, Square2, Square3, Square4]).
 %sudoku4([_,_,2,3,2,_,_,_,_,_,_,1,1,4,_,_],X).
 
+
+
 sudoku6(Puzzle, Solution) :-
         Solution = Puzzle,
         Puzzle = [S11, S12, S13, S14, S15, S16,
@@ -56,8 +58,32 @@ sudoku6(Puzzle, Solution) :-
     Col1, Col2, Col3, Col4, Col5, Col6,
     Square1, Square2, Square3, Square4, Square5, Square6]).
 
+% pretty printing of a soduku
+writesod([],_,_).
+writesod([H|T],NumPerRow,CurrNum) :-
+    CurrNum >= NumPerRow,
+    nl,
+    write(H),
+    writesod(T,NumPerRow,1).
+writesod([H|T],NumPerRow,CurrNum) :-
+    CurrNum < NumPerRow,
+    write(H),
+    writesod(T,NumPerRow,CurrNum + 1).
+
+
+sudoku4pp(Puzzle,Solution) :-
+    sudoku4(Puzzle,Solution),
+    writesod(Solution,4,0).
+
+sudoku6pp(Puzzle,Solution) :-
+    sudoku6(Puzzle,Solution),
+    writesod(Solution,6,0).
 
 /*
+sudoku6([6,3,1,4,_,_,2,_,_,_,_,_,_,_,_,_,4,_,1,4,_,_,_,_,_,_,6,_,3,_,_,_,_,2,5,6],X).
+
+sudoku4pp([_,_,2,3,2,_,_,_,_,_,_,1,1,4,_,_],X).
+
 sudoku6([
     6,3,1,4,_,_,
     2,_,_,_,_,_,
