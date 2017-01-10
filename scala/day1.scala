@@ -49,3 +49,12 @@ val p = new Person("Nisse","Tuta")
 
 println(p.nisse)
 Person.aSingleton()
+
+
+
+class TicTac {
+    val e = ""
+    val x = "X"
+    val y = "Y"
+    var board = (e,e,e,e,e,e,e,e,e)
+}
