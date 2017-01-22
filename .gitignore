@@ -5,3 +5,4 @@ scala/scala-docs-2.12.1.zip
 **/*~
 scala/day3/project
 scala/day3/target
+**/*.beam
