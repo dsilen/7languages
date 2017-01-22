@@ -12,7 +12,7 @@
 words_in_string("") -> 0;
 words_in_string([_|T]) -> 1 + words_in_string(T).
 
-count_to_ten(10) -> 10;
+count_to_ten(11) -> ok;
 count_to_ten(N) -> io:format("~p\n",[N]),
                    count_to_ten(N+1).
 count_to_ten() -> count_to_ten(1).
