@@ -45,7 +45,7 @@ trait Censor {
         val lines = source.getLines
         val emptyMap = Map[String,String]()
         synonyms = lines.foldLeft(emptyMap)((s,l) => {
-            val (k::v::rest) = l.split(",").toList
+            val (k::v::_) = l.split(",").toList
             s + (k -> v)
         })
         source.close // Using!?!
