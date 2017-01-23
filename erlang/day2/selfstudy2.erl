@@ -2,6 +2,7 @@
 -export([map_lookup/2]).
 -export([total_price/1]).
 -export([tic_tack/1]).
+%-export([all_same/1]).
 
 map_lookup(Key,List) ->
     Tuple = lists:keyfind(Key,1,List),
@@ -43,22 +44,15 @@ all_same(_) -> false.
 
 tic_tack(Board) ->
     AllCombos = all_combos(Board),
-    lists:filter(all_same,AllCombos).
+    Winners = lists:filter(fun(X) -> all_same(X) end,AllCombos),
+    Distinct = sets:size(sets:from_list(tuple_to_list(Board))),
+    case Winners of
+        [{Winner,_,_}|_] -> Winner;
+        _ -> if Distinct < 3 -> cat; true -> no_winner end
+    end.
 
-% selfstudy2:tic_tack({x,x,y,x,x,y,y,y,x}).
+%selfstudy2:tic_tack({x,x,y,x,x,y,y,y,x}).
 
+%selfstudy2:tic_tack({x,x,y,y,x,x,x,y,y}).
 
-%    AllSame = fun(X) -> case X of
-%                {X,X,X} -> true;
-%                _ -> false
-%            end,
-%    Same = lists:filter(AllSame,AllCombos),
-%    case Same of
-%        [{X,_,_}|_] -> X;
-%        _ -> false
-%    end.
-
-
-
-
-
+%selfstudy2:tic_tack({x,t,y,y,x,x,x,y,y}).
