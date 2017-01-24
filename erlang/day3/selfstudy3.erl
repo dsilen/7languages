@@ -40,7 +40,8 @@ translator_monitor() ->
             register(translator, NewTranslator),
             translator_monitor();
         exit ->
-            print("Monitor exiting") %,exit(yada)
+            print("Monitor exiting"),
+            exit(yada)
     end.
 
 setup_monitor() ->
@@ -51,9 +52,9 @@ setup_monitor() ->
 %Monitor = selfstudy3:setup_monitor().
 %selfstudy3:translate("casa").
 %translator ! diediedie.
-%monitor ! exit.
-%flush().
+%Monitor ! exit.
 %self() ! "fusk".
+%flush().
 
 
 
