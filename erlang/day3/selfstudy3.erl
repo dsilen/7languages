@@ -2,6 +2,14 @@
 -export([setup_monitor/0]).
 -export([translate/1]).
 
+% hitta OTP Monitor
+% http://erlang.org/doc/design_principles/sup_princ.html
+
+% OTP server
+% http://erlang.org/doc/design_principles/gen_server_concepts.html
+
+% bonus regga globalt: http://erlang.org/doc/man/global.html global:register(...)
+
 print(X) -> io:format("~p~n",[X]).
 
 
