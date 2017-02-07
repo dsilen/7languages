@@ -47,7 +47,6 @@
 
 (defn addCustomerToWaitchairIfAvailable [chairs customer]
     (do
-;    (println "adCust")
     (let [
         l (:chairs chairs)
         c (:max chairs)]
@@ -61,23 +60,35 @@
         (if @stop?
             nil
             (do
-                (sleepInterval 1000 3000)
-;                (println "kör")
+                (sleepInterval 10 30)
                 (dosync (alter waitchairs addCustomerToWaitchairIfAvailable (getCustomerName)))
                 (recur)))))
 
 (send customer-dispatcher do-dispatch)
 
+; chairwatcher
+(add-watch waitchairs :key (fn [k r ov nv]
+    (if (first nv) ; om finns nån där
+        (do
+            (moveToBarberChair)
+            (wakeBarber)))))
+
+(defn moveToBarberChair []
+    (dosync
+        (alter chairs)))
+
+
 ; barber
 (def barber (agent nil))
 
 (defn do-barb [_]
+    (loop []
     (if @stop?
         nil
         (do
-            (Thread/sleep 2000)
-            (println "barb")
-            (recur nil))))
+            (Thread/sleep 20)
+
+            (recur)))))
 
 (send barber do-barb)
 
