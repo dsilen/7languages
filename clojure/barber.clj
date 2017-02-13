@@ -68,15 +68,21 @@
 
 ; chairwatcher
 (add-watch waitchairs :key (fn [k r ov nv]
-    (if (first nv) ; om finns nån där
+    (if (first (:chairs nv)) ; om finns nån där
         (do
             (moveToBarberChair)
             (wakeBarber)))))
 
 (defn moveToBarberChair []
     (dosync
-        (alter chairs)))
-
+        (let [
+            first (first (:chairs @waitchairs))
+            rest (rest (:chairs @waitchairs))
+            barb @barberchair
+            ]
+            (if-not barb (do
+                (alter waitchairs (fn [c] (assoc c :chairs rest)))
+                (alter barberchair (fn [c] first)))))))
 
 ; barber
 (def barber (agent nil))
