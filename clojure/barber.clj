@@ -15,6 +15,7 @@
 
 (defn dostop [] (dosync (ref-set stop? true)))
 
+(def barbercount (ref 0))
 
 (def barberchair (ref nil))
 
@@ -64,14 +65,18 @@
                 (dosync (alter waitchairs addCustomerToWaitchairIfAvailable (getCustomerName)))
                 (recur)))))
 
-(send customer-dispatcher do-dispatch)
+; barber
+(def barber (agent nil))
 
-; chairwatcher
-(add-watch waitchairs :key (fn [k r ov nv]
-    (if (first (:chairs nv)) ; om finns nån där
-        (do
-            (moveToBarberChair)
-            (wakeBarber)))))
+(defn do-barb [_]
+    (when @barberchair
+        (Thread/sleep 20)
+        (dosync
+            (alter barberchair (fn [c] nil))
+            (alter barbercount (fn [c] (+ c 1))))))
+
+(defn wakeBarber []
+    (send barber do-barb))
 
 (defn moveToBarberChair []
     (dosync
@@ -84,17 +89,25 @@
                 (alter waitchairs (fn [c] (assoc c :chairs rest)))
                 (alter barberchair (fn [c] first)))))))
 
-; barber
-(def barber (agent nil))
-
-(defn do-barb [_]
-    (loop []
-    (if @stop?
-        nil
+; chairwatcher
+(add-watch waitchairs :key (fn [k r ov nv]
+    (if (first (:chairs nv)) ; om finns nån där
         (do
-            (Thread/sleep 20)
+            (moveToBarberChair)
+            (wakeBarber)))))
 
-            (recur)))))
+(add-watch barberchair :key2 (fn [k r ov nv]
+    (if-not nv
+        (moveToBarberChair)
+        (wakeBarber))))
 
-(send barber do-barb)
+; fixa ett jobb som stänger av allt 10 sek senare
+(def shutterdowner (agent nil))
+(send shutterdowner (fn []
+    (do 
+        (Thread/sleep 10000)
+        (println "stopping")
+        (dostop))))
 
+; starta joxet
+(send customer-dispatcher do-dispatch)
